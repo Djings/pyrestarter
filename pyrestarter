@@ -90,6 +90,9 @@ if __name__ == "__main__":
         print "  pyrestarter [-g] yourscript.py [your script arg [ more args ... ] ]"
         print 
         print "  -g    Parse global dependencies as well as local ones"
+        print 
+        print "  weird features of the day:"
+        print "      - The .py extension in yourscript.py may be omitted"
         sys.exit(1)
 
     global_dependencies = False
@@ -99,6 +102,10 @@ if __name__ == "__main__":
         global_dependencies = True
         scr = sys.argv[2]
         arguments = sys.argv[3:]
+
+    # Assume the caller meant to run the python script with the same name
+    if not os.path.exists(scr) and os.path.exists(scr + ".py"):
+        scr = scr + ".py"
 
     script = os.path.abspath(scr)
 
