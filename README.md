@@ -17,9 +17,10 @@ Required Libraries/Tools
     - for the dependency analysis
 
 In Ubuntu it comes down to:
+```
 apt-get install snakefood python-pip
 pip install watchdog
-
+```
 
 
 Usage
