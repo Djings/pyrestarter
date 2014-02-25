@@ -8,7 +8,7 @@ This simple python script can restart other python scripts, when their codebase 
 
 
 Required Libraries/Tools
-========================
+------------------------
 
 * watchdog (https://pypi.python.org/pypi/watchdog/)
     - for watching the filesystem
@@ -17,13 +17,14 @@ Required Libraries/Tools
     - for the dependency analysis
 
 In Ubuntu it comes down to:
+```
 apt-get install snakefood python-pip
 pip install watchdog
-
+```
 
 
 Usage
-=====
+-----
 
 python restarter.py <yourscript.py>
 
