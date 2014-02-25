@@ -8,7 +8,7 @@ This simple python script can restart other python scripts, when their codebase 
 
 
 Required Libraries/Tools
-========================
+------------------------
 
 * watchdog (https://pypi.python.org/pypi/watchdog/)
     - for watching the filesystem
@@ -24,7 +24,7 @@ pip install watchdog
 
 
 Usage
-=====
+-----
 
 python restarter.py <yourscript.py>
 
