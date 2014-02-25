@@ -76,7 +76,7 @@ def get_dependencies(scriptfilename):
 
     # Call the snakefood binary.
     # FIXME: Call this as python module directly
-    dependencies = sp.check_output(["sfood", "-fq", script])
+    dependencies = sp.check_output(["sfood", "-fiq", script])
     dependencies = flatten(dependencies)
     return set(dependencies)
 
