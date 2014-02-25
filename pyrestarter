@@ -39,10 +39,10 @@ class RestartHandler(FileSystemEventHandler):
             self.restart_lock.notifyAll()
             self.restart_lock.release()
 
-def get_dependencies(scriptfilename):
+def get_dependencies(scriptfilename, global_deps=False):
     """ Returns a set of all file dependencies for the given script name 
         
-        Only used imports count as actual dependencies.
+        @param global_deps When set to True global libraries will be watched for changes as well.
     """
 
     def read_depends(f):
@@ -74,17 +74,40 @@ def get_dependencies(scriptfilename):
             result.append(os.path.join(droot, drel))
         return result
 
-    # Call the snakefood binary.
     # FIXME: Call this as python module directly
-    dependencies = sp.check_output(["sfood", "-fq", script])
+    params = "-fq"
+    if not global_deps:
+        params = params + "i"
+    # Call the snakefood binary.
+    dependencies = sp.check_output(["sfood", params, script])
     dependencies = flatten(dependencies)
     return set(dependencies)
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print "usage:"
+        print "  pyrestarter [-g] yourscript.py [your script arg [ more args ... ] ]"
+        print 
+        print "  -g    Parse global dependencies as well as local ones"
+        print 
+        print "  weird features of the day:"
+        print "      - The .py extension in yourscript.py may be omitted"
+        sys.exit(1)
+
+    global_dependencies = False
     scr = sys.argv[1]
-    script = os.path.abspath(scr)
     arguments = sys.argv[2:]
+    if len(sys.argv) > 2 and sys.argv[1] == "-g":
+        global_dependencies = True
+        scr = sys.argv[2]
+        arguments = sys.argv[3:]
+
+    # Assume the caller meant to run the python script with the same name
+    if not os.path.exists(scr) and os.path.exists(scr + ".py"):
+        scr = scr + ".py"
+
+    script = os.path.abspath(scr)
 
     restart_lock = threading.Condition()
     observer = Observer()
