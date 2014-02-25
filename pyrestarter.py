@@ -84,6 +84,7 @@ def get_dependencies(scriptfilename):
 if __name__ == "__main__":
     scr = sys.argv[1]
     script = os.path.abspath(scr)
+    arguments = sys.argv[2:]
 
     restart_lock = threading.Condition()
     observer = Observer()
@@ -130,8 +131,8 @@ if __name__ == "__main__":
 
                     process = None
 
-                process = sp.Popen(("python", script))
-            else:
+                process = sp.Popen(["python", script] + arguments)
+            else: 
                 restart_lock.wait(0.1)
             restart_lock.release()
     except KeyboardInterrupt:
